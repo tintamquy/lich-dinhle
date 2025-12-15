@@ -9,7 +9,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát bạch Phật: 'Thế Tôn! Chúng sanh trong cõi Diêm Phù Đề, khởi tâm động niệm, không có gì chẳng phải là nghiệp, không có gì chẳng phải là tội.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 4",
             theme: "snow",
-            themeName: "Tuyết Rơi"
+            themeName: "Tuyết Rơi",
+            backgroundImage: "Lịch 2025/T12/Bìa/Cổng Hộp cờ Đồng Văn 4.jpg"
         },
         {
             month: 0, // January 2026 - Tết Nguyên Đán
@@ -19,7 +20,8 @@ const calendarData = {
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 2",
             theme: "cherry-blossom",
             themeName: "Hoa Đào",
-            isTet: true // Tháng Tết
+            isTet: true,
+            backgroundImage: "Lịch 2025/T1/Ảnh/ảnh đại diện chính.jpg"
         },
         {
             month: 1, // February 2026
@@ -28,7 +30,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Chúng sanh trong cõi Diêm Phù Đề, tánh tình cố chấp, tập khí ác nhiều, dù được khai hóa, nhưng vẫn tạo tội, tạo nghiệp nhiều hơn làm phước.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 6",
             theme: "plum-blossom",
-            themeName: "Hoa Mai"
+            themeName: "Hoa Mai",
+            backgroundImage: "Lịch 2025/T2/Chìm/Amphenol.jpg"
         },
         {
             month: 2, // March 2026
@@ -37,7 +40,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát dạy: 'Nếu có người nào, hoặc nam, hoặc nữ, ở đời hiện tại, không làm việc lành, chỉ tạo ác nghiệp, thì khi chết, sẽ đọa vào địa ngục.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 3",
             theme: "spring-rain",
-            themeName: "Mưa Xuân"
+            themeName: "Mưa Xuân",
+            backgroundImage: "Lịch 2025/T3/Chìm/Anda.jpg"
         },
         {
             month: 3, // April 2026
@@ -46,7 +50,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể ở trước tượng Phật, Bồ Tát, hoặc ở trước kinh tượng, đốt hương, cúng dường, thì sẽ được phước đức vô lượng.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 10",
             theme: "lotus",
-            themeName: "Hoa Sen"
+            themeName: "Hoa Sen",
+            backgroundImage: "Lịch 2025/T4/Chìm/Amphenol góc phải.jpg"
         },
         {
             month: 4, // May 2026
@@ -55,7 +60,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát dạy: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể niệm danh hiệu Địa Tạng Bồ Tát, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "summer-sun",
-            themeName: "Nắng Hè"
+            themeName: "Nắng Hè",
+            backgroundImage: "Lịch 2025/T5/z5973993890272_832129a0a2e06b6fdb7d20315b8116b4.jpg"
         },
         {
             month: 5, // June 2026
@@ -64,7 +70,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể tụng đọc Kinh Địa Tạng, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "lotus",
-            themeName: "Hoa Sen"
+            themeName: "Hoa Sen",
+            backgroundImage: "Lịch 2025/T6/Bìa/nhathep_dinhle.jpg"
         },
         {
             month: 6, // July 2026
@@ -73,7 +80,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát dạy: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể cúng dường, tán thán, lễ bái Địa Tạng Bồ Tát, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "summer-sun",
-            themeName: "Nắng Hè"
+            themeName: "Nắng Hè",
+            backgroundImage: "Lịch 2025/T7/Chìm/Elentec.jpg"
         },
         {
             month: 7, // August 2026
@@ -82,7 +90,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể phát tâm Bồ Đề, tu tập thiện pháp, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "autumn-leaves",
-            themeName: "Lá Thu"
+            themeName: "Lá Thu",
+            backgroundImage: "Lịch 2025/T8/Chìm/ảnh bìa.jpg"
         },
         {
             month: 8, // September 2026
@@ -91,7 +100,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát dạy: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể phóng sanh, cứu vật, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "autumn-moon",
-            themeName: "Trăng Thu"
+            themeName: "Trăng Thu",
+            backgroundImage: "Lịch 2025/T9/Bìa/z5835951766283_c18d5e26eeacea4d80c9a2cc2a6dfbce.jpg"
         },
         {
             month: 9, // October 2026
@@ -100,7 +110,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể bố thí, cúng dường, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "chrysanthemum",
-            themeName: "Hoa Cúc"
+            themeName: "Hoa Cúc",
+            backgroundImage: "Lịch 2025/T10/Chìm/ảnh chìm 1.jpg"
         },
         {
             month: 10, // November 2026
@@ -109,7 +120,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát dạy: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể giữ gìn giới luật, tu tập thiền định, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "winter-frost",
-            themeName: "Sương Giá"
+            themeName: "Sương Giá",
+            backgroundImage: "Lịch 2025/T11/Bìa/Dong SHin HN vina.jpg"
         },
         {
             month: 11, // December 2026
@@ -118,7 +130,8 @@ const calendarData = {
             quote: "Địa Tạng Bồ Tát nói: 'Nếu có chúng sanh nào, ở đời hiện tại, hoặc đời vị lai, có thể phát tâm Bồ Đề, tu tập Bồ Tát đạo, thì sẽ được phước đức vô lượng, vô biên.'",
             source: "Kinh Địa Tạng Bồ Tát Bổn Nguyện - Phẩm thứ 13",
             theme: "snow",
-            themeName: "Tuyết Rơi"
+            themeName: "Tuyết Rơi",
+            backgroundImage: "Lịch 2025/T12/Bìa/Cổng Hộp cờ Đồng Văn 4.jpg"
         }
     ]
 };

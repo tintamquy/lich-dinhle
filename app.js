@@ -2,11 +2,13 @@
 let currentMonthIndex = getCurrentMonthIndex();
 let today = getCurrentDate();
 let animationInterval = null;
+let monthEvents = {};
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     initEventListeners();
     loadMonth(currentMonthIndex);
+    createWatercolorEffect();
 });
 
 // Initialize event listeners
@@ -50,7 +52,7 @@ function initEventListeners() {
 }
 
 // Load month data and render calendar
-function loadMonth(monthIndex) {
+async function loadMonth(monthIndex) {
     const monthData = calendarData.months[monthIndex];
     if (!monthData) return;
 
@@ -66,6 +68,9 @@ function loadMonth(monthIndex) {
     document.querySelectorAll('.month-btn').forEach((btn, index) => {
         btn.classList.toggle('active', index === monthIndex);
     });
+
+    // Load events for this month
+    monthEvents = await API_SERVICE.getMonthEvents(monthData.year, monthData.month);
 
     // Render calendar
     renderCalendar(monthData);
@@ -100,14 +105,15 @@ function renderCalendar(monthData) {
     // Add days from previous month
     for (let i = firstDay - 1; i >= 0; i--) {
         const day = daysInPrevMonth - i;
-        const dayDiv = createDayElement(day, true, false, false);
+        const dayDiv = createDayElement(day, true, false, false, null);
         container.appendChild(dayDiv);
     }
 
     // Add days of current month
     for (let day = 1; day <= daysInMonth; day++) {
         const isToday = isCurrentMonth && day === todayDate;
-        const dayDiv = createDayElement(day, false, isToday, false);
+        const dayEvents = monthEvents[day] || null;
+        const dayDiv = createDayElement(day, false, isToday, false, dayEvents);
         container.appendChild(dayDiv);
     }
 
@@ -115,16 +121,20 @@ function renderCalendar(monthData) {
     const totalCells = container.children.length;
     const remainingCells = 42 - totalCells; // 6 rows * 7 days
     for (let day = 1; day <= remainingCells; day++) {
-        const dayDiv = createDayElement(day, false, false, true);
+        const dayDiv = createDayElement(day, false, false, true, null);
         container.appendChild(dayDiv);
     }
 }
 
-// Create day element
-function createDayElement(day, isPrevMonth, isToday, isNextMonth) {
+// Create day element with events
+function createDayElement(day, isPrevMonth, isToday, isNextMonth, events) {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'calendar-day';
-    dayDiv.textContent = day;
+    
+    const dayNumber = document.createElement('span');
+    dayNumber.className = 'day-number';
+    dayNumber.textContent = day;
+    dayDiv.appendChild(dayNumber);
 
     if (isPrevMonth || isNextMonth) {
         dayDiv.classList.add('other-month');
@@ -134,10 +144,79 @@ function createDayElement(day, isPrevMonth, isToday, isNextMonth) {
         dayDiv.classList.add('today');
     }
 
+    // Add event indicator
+    if (events && events.length > 0) {
+        const eventIndicator = document.createElement('div');
+        eventIndicator.className = 'event-indicator';
+        eventIndicator.title = events.map(e => e.name).join(', ');
+        
+        // Add event dots
+        events.forEach((event, index) => {
+            const dot = document.createElement('span');
+            dot.className = `event-dot event-${event.type}`;
+            eventIndicator.appendChild(dot);
+        });
+        
+        dayDiv.appendChild(eventIndicator);
+        dayDiv.classList.add('has-events');
+        
+        // Add click to show event details
+        dayDiv.addEventListener('click', () => showEventDetails(day, events));
+    }
+
+    // Add hover animation
+    dayDiv.addEventListener('mouseenter', () => {
+        dayDiv.style.transform = 'translateY(-4px) scale(1.05)';
+    });
+    
+    dayDiv.addEventListener('mouseleave', () => {
+        if (!isToday) {
+            dayDiv.style.transform = '';
+        }
+    });
+
     return dayDiv;
 }
 
-// Update hero background based on theme
+// Show event details
+function showEventDetails(day, events) {
+    // Create or update event tooltip
+    let tooltip = document.getElementById('event-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'event-tooltip';
+        document.body.appendChild(tooltip);
+    }
+    
+    const eventList = events.map(e => 
+        `<div class="event-item event-${e.type}">
+            <strong>${e.name}</strong>
+            <span>${e.description || ''}</span>
+        </div>`
+    ).join('');
+    
+    tooltip.innerHTML = `
+        <div class="tooltip-header">Ngày ${day}</div>
+        <div class="tooltip-events">${eventList}</div>
+    `;
+    
+    tooltip.classList.add('show');
+    
+    // Position tooltip
+    const dayElement = event.target.closest('.calendar-day');
+    if (dayElement) {
+        const rect = dayElement.getBoundingClientRect();
+        tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+        tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+    }
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+        tooltip.classList.remove('show');
+    }, 5000);
+}
+
+// Update hero background with factory image
 function updateHeroBackground(monthData) {
     const heroBackground = document.getElementById('hero-background');
     if (!heroBackground) return;
@@ -145,6 +224,97 @@ function updateHeroBackground(monthData) {
     // Remove all theme classes
     heroBackground.className = 'hero-background';
     heroBackground.classList.add(`theme-${monthData.theme}`);
+    
+    // Set background image if available
+    if (monthData.backgroundImage) {
+        heroBackground.style.backgroundImage = `url('${monthData.backgroundImage}')`;
+        heroBackground.style.backgroundSize = 'cover';
+        heroBackground.style.backgroundPosition = 'center';
+        heroBackground.style.filter = 'blur(8px) brightness(0.7)';
+        heroBackground.style.opacity = '0.4';
+    }
+}
+
+// Create watercolor painting effect
+function createWatercolorEffect() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'watercolor-canvas';
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '1';
+    canvas.style.opacity = '0.3';
+    document.body.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Watercolor animation
+    let particles = [];
+    const colors = ['#007FFF', '#00BFFF', '#87CEEB', '#E6F3FF'];
+    
+    for (let i = 0; i < 15; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 100 + 50,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            life: Math.random() * 100 + 50
+        });
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            // Update position
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.life -= 0.5;
+            
+            // Wrap around edges
+            if (particle.x < 0) particle.x = canvas.width;
+            if (particle.x > canvas.width) particle.x = 0;
+            if (particle.y < 0) particle.y = canvas.height;
+            if (particle.y > canvas.height) particle.y = 0;
+            
+            // Reset if life is over
+            if (particle.life <= 0) {
+                particle.x = Math.random() * canvas.width;
+                particle.y = Math.random() * canvas.height;
+                particle.life = Math.random() * 100 + 50;
+            }
+            
+            // Draw watercolor blob
+            const gradient = ctx.createRadialGradient(
+                particle.x, particle.y, 0,
+                particle.x, particle.y, particle.radius
+            );
+            gradient.addColorStop(0, particle.color + '80');
+            gradient.addColorStop(1, particle.color + '00');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+    
+    // Resize handler
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 }
 
 // Update theme
@@ -196,7 +366,6 @@ function updateTheme(monthData) {
 
 // Create cherry blossom falling effect (for Tet month)
 function createCherryBlossomFallingEffect(container) {
-    // Create continuous falling petals
     function createPetals() {
         for (let i = 0; i < 5; i++) {
             setTimeout(() => {
@@ -208,7 +377,6 @@ function createCherryBlossomFallingEffect(container) {
                 petal.style.opacity = Math.random() * 0.5 + 0.5;
                 container.appendChild(petal);
                 
-                // Remove after animation
                 setTimeout(() => {
                     if (petal.parentNode) {
                         petal.remove();
@@ -218,10 +386,7 @@ function createCherryBlossomFallingEffect(container) {
         }
     }
     
-    // Initial petals
     createPetals();
-    
-    // Create new petals every 2 seconds
     animationInterval = setInterval(createPetals, 2000);
 }
 
