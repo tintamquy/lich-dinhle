@@ -105,7 +105,7 @@ function renderCalendar(monthData) {
     // Add days from previous month
     for (let i = firstDay - 1; i >= 0; i--) {
         const day = daysInPrevMonth - i;
-        const dayDiv = createDayElement(day, true, false, false, null);
+        const dayDiv = createDayElement(day, true, false, false, null, null);
         container.appendChild(dayDiv);
     }
 
@@ -113,7 +113,8 @@ function renderCalendar(monthData) {
     for (let day = 1; day <= daysInMonth; day++) {
         const isToday = isCurrentMonth && day === todayDate;
         const dayEvents = monthEvents[day] || null;
-        const dayDiv = createDayElement(day, false, isToday, false, dayEvents);
+        const solarDate = new Date(year, month, day);
+        const dayDiv = createDayElement(day, false, isToday, false, dayEvents, solarDate);
         container.appendChild(dayDiv);
     }
 
@@ -121,13 +122,13 @@ function renderCalendar(monthData) {
     const totalCells = container.children.length;
     const remainingCells = 42 - totalCells; // 6 rows * 7 days
     for (let day = 1; day <= remainingCells; day++) {
-        const dayDiv = createDayElement(day, false, false, true, null);
+        const dayDiv = createDayElement(day, false, false, true, null, null);
         container.appendChild(dayDiv);
     }
 }
 
 // Create day element with events
-function createDayElement(day, isPrevMonth, isToday, isNextMonth, events) {
+function createDayElement(day, isPrevMonth, isToday, isNextMonth, events, solarDate) {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'calendar-day';
     
@@ -135,6 +136,16 @@ function createDayElement(day, isPrevMonth, isToday, isNextMonth, events) {
     dayNumber.className = 'day-number';
     dayNumber.textContent = day;
     dayDiv.appendChild(dayNumber);
+    
+    // Add lunar date
+    if (solarDate && !isPrevMonth && !isNextMonth) {
+        const lunarDate = LUNAR_CALENDAR.getShortLunarDate(solarDate);
+        
+        const lunarSpan = document.createElement('span');
+        lunarSpan.className = 'lunar-date';
+        lunarSpan.textContent = lunarDate;
+        dayDiv.appendChild(lunarSpan);
+    }
 
     if (isPrevMonth || isNextMonth) {
         dayDiv.classList.add('other-month');
@@ -235,86 +246,118 @@ function updateHeroBackground(monthData) {
     }
 }
 
-// Create watercolor painting effect
+// Create beautiful floating particles effect
 function createWatercolorEffect() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'watercolor-canvas';
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '1';
-    canvas.style.opacity = '0.3';
-    document.body.appendChild(canvas);
+    const container = document.createElement('div');
+    container.id = 'floating-particles';
+    container.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+    `;
+    document.body.appendChild(container);
     
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Create floating particles
+    const particleCount = 30;
+    const particles = [];
     
-    // Watercolor animation
-    let particles = [];
-    const colors = ['#007FFF', '#00BFFF', '#87CEEB', '#E6F3FF'];
-    
-    for (let i = 0; i < 15; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 100 + 50,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            life: Math.random() * 100 + 50
-        });
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        
+        const size = Math.random() * 100 + 50;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const duration = Math.random() * 20 + 15;
+        const delay = Math.random() * 5;
+        
+        particle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}%;
+            top: ${y}%;
+            background: radial-gradient(circle, rgba(0, 127, 255, 0.15) 0%, rgba(0, 191, 255, 0.05) 50%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: float-particle ${duration}s ease-in-out infinite;
+            animation-delay: ${delay}s;
+        `;
+        
+        container.appendChild(particle);
+        particles.push(particle);
     }
     
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        particles.forEach(particle => {
-            // Update position
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            particle.life -= 0.5;
-            
-            // Wrap around edges
-            if (particle.x < 0) particle.x = canvas.width;
-            if (particle.x > canvas.width) particle.x = 0;
-            if (particle.y < 0) particle.y = canvas.height;
-            if (particle.y > canvas.height) particle.y = 0;
-            
-            // Reset if life is over
-            if (particle.life <= 0) {
-                particle.x = Math.random() * canvas.width;
-                particle.y = Math.random() * canvas.height;
-                particle.life = Math.random() * 100 + 50;
+    // Add CSS animation
+    if (!document.getElementById('particle-animations')) {
+        const style = document.createElement('style');
+        style.id = 'particle-animations';
+        style.textContent = `
+            @keyframes float-particle {
+                0%, 100% {
+                    transform: translate(0, 0) scale(1);
+                    opacity: 0.3;
+                }
+                25% {
+                    transform: translate(30px, -30px) scale(1.1);
+                    opacity: 0.5;
+                }
+                50% {
+                    transform: translate(-20px, -50px) scale(0.9);
+                    opacity: 0.4;
+                }
+                75% {
+                    transform: translate(-30px, 20px) scale(1.05);
+                    opacity: 0.5;
+                }
             }
-            
-            // Draw watercolor blob
-            const gradient = ctx.createRadialGradient(
-                particle.x, particle.y, 0,
-                particle.x, particle.y, particle.radius
-            );
-            gradient.addColorStop(0, particle.color + '80');
-            gradient.addColorStop(1, particle.color + '00');
-            
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            ctx.fill();
-        });
-        
-        requestAnimationFrame(animate);
+        `;
+        document.head.appendChild(style);
     }
     
-    animate();
+    // Create animated gradient waves
+    const waveContainer = document.createElement('div');
+    waveContainer.className = 'gradient-waves';
+    waveContainer.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.2;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 127, 255, 0.1) 0%,
+            rgba(0, 191, 255, 0.1) 25%,
+            rgba(135, 206, 235, 0.1) 50%,
+            rgba(0, 191, 255, 0.1) 75%,
+            rgba(0, 127, 255, 0.1) 100%
+        );
+        background-size: 400% 400%;
+        animation: gradient-wave 15s ease infinite;
+    `;
+    document.body.appendChild(waveContainer);
     
-    // Resize handler
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
+    // Add gradient wave animation
+    if (!document.getElementById('gradient-wave-animation')) {
+        const style = document.createElement('style');
+        style.id = 'gradient-wave-animation';
+        style.textContent = `
+            @keyframes gradient-wave {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // Update theme
