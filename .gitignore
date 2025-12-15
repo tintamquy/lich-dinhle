@@ -35,3 +35,7 @@ build/
 .cache/
 *.cache
 
+# Service Worker (removed)
+service-worker.js
+manifest.json
+

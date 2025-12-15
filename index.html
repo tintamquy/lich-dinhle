@@ -3,129 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lịch 2025 Phật Pháp - Mỗi tháng một câu Phật học ý nghĩa từ Kinh Địa Tạng">
+    <meta name="description" content="Lịch 2026 Phật Pháp - Mỗi tháng một câu Phật học ý nghĩa từ Kinh Địa Tạng">
     <meta property="og:image" content="og-image.png">
-    <meta property="og:title" content="Lịch 2025 Phật Pháp">
-    <meta property="og:description" content="Lịch 2025 với những câu Phật học ý nghĩa từ Kinh Địa Tạng">
-    <meta property="og:url" content="https://tintamquy.github.io/lich-dinhle/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Lịch 2025 Phật Pháp">
-    <meta name="twitter:description" content="Lịch 2025 với những câu Phật học ý nghĩa từ Kinh Địa Tạng">
-    <meta name="twitter:image" content="og-image.png">
-    <meta name="theme-color" content="#764ba2">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Lịch Phật Pháp">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="LOGO-1-1.png">
-    <link rel="apple-touch-icon" href="LOGO-1-1.png">
-    <title>Lịch 2025 Phật Pháp - Câu Phật Học Từ Kinh Địa Tạng</title>
+    <meta property="og:title" content="Lịch 2026 Phật Pháp">
+    <meta property="og:description" content="Lịch 2026 với những câu Phật học ý nghĩa từ Kinh Địa Tạng">
+    <meta name="theme-color" content="#007FFF">
+    <title>Lịch 2026 Phật Pháp</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="loading-screen">
-        <div class="loader">
-            <div class="lotus"></div>
-            <p>Đang tải...</p>
-        </div>
-    </div>
+    <!-- Google Translate -->
+    <div id="google_translate_element" class="google-translate"></div>
 
     <div id="app">
-        <!-- Language Selector -->
-        <div class="language-selector" role="group" aria-label="Language selector">
-            <button class="lang-btn active" data-lang="vi" aria-label="Tiếng Việt">VI</button>
-            <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
-            <button class="lang-btn" data-lang="zh" aria-label="中文">中文</button>
-        </div>
-
-        <!-- Logo -->
-        <div class="logo-container">
-            <img src="LOGO-1-1.png" alt="Logo" class="logo">
-        </div>
-
-        <!-- Calendar Container -->
-        <div id="calendar-container">
-            <canvas id="calendar-canvas"></canvas>
-        </div>
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="LOGO-1-1.png" alt="Logo" class="logo">
+            </div>
+            <div class="header-title">
+                <h1>Lịch 2026</h1>
+                <p class="subtitle">Phật Pháp</p>
+            </div>
+        </header>
 
         <!-- Month Navigation -->
-        <nav class="month-navigation" aria-label="Month navigation">
-            <button id="prev-month" class="nav-btn" aria-label="Previous month">‹</button>
+        <nav class="month-navigation">
+            <button id="prev-month" class="nav-btn" aria-label="Tháng trước">‹</button>
             <div class="month-indicator">
-                <span id="current-month-name" aria-live="polite"></span>
-                <span id="current-year">2025</span>
+                <span id="current-month-name" class="month-name"></span>
+                <span id="current-year" class="year">2026</span>
             </div>
-            <button id="next-month" class="nav-btn" aria-label="Next month">›</button>
+            <button id="next-month" class="nav-btn" aria-label="Tháng sau">›</button>
         </nav>
 
-        <!-- Month Grid -->
-        <div class="month-grid">
-            <button class="month-btn" data-month="0">T1</button>
-            <button class="month-btn" data-month="1">T2</button>
-            <button class="month-btn" data-month="2">T3</button>
-            <button class="month-btn" data-month="3">T4</button>
-            <button class="month-btn" data-month="4">T5</button>
-            <button class="month-btn" data-month="5">T6</button>
-            <button class="month-btn" data-month="6">T7</button>
-            <button class="month-btn" data-month="7">T8</button>
-            <button class="month-btn" data-month="8">T9</button>
-            <button class="month-btn" data-month="9">T10</button>
-            <button class="month-btn" data-month="10">T11</button>
-            <button class="month-btn" data-month="11">T12</button>
-        </div>
-
-        <!-- Social Share -->
-        <div class="social-share">
-            <button class="share-btn" id="share-facebook" title="Chia sẻ Facebook">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </button>
-            <button class="share-btn" id="share-twitter" title="Chia sẻ Twitter">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Month Content Overlay -->
-    <div id="month-overlay" class="overlay">
-        <div class="overlay-content">
-            <button class="close-overlay">×</button>
-            <div class="month-content">
-                <div class="month-header">
-                    <h1 id="overlay-month-name"></h1>
-                    <div class="seasonal-effect" id="seasonal-effect"></div>
+        <!-- Calendar Grid -->
+        <main class="calendar-container">
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <div class="weekday">CN</div>
+                    <div class="weekday">T2</div>
+                    <div class="weekday">T3</div>
+                    <div class="weekday">T4</div>
+                    <div class="weekday">T5</div>
+                    <div class="weekday">T6</div>
+                    <div class="weekday">T7</div>
                 </div>
-                <div class="buddhist-quote">
-                    <div class="quote-icon">☸</div>
-                    <p id="quote-text"></p>
-                    <p class="quote-source" id="quote-source"></p>
-                </div>
-                <div class="company-images" id="company-images"></div>
-                <div class="calendar-grid" id="calendar-grid"></div>
+                <div id="calendar-grid" class="calendar-grid"></div>
+            </div>
+        </main>
+
+        <!-- Month Theme Display -->
+        <div class="theme-display" id="theme-display">
+            <div class="theme-animation" id="theme-animation"></div>
+            <div class="buddhist-quote">
+                <p id="quote-text"></p>
+                <p class="quote-source" id="quote-source"></p>
             </div>
         </div>
+
+        <!-- Quick Month Selector -->
+        <div class="month-selector">
+            <button class="month-btn" data-month="0">T12/2025</button>
+            <button class="month-btn" data-month="1">T1</button>
+            <button class="month-btn" data-month="2">T2</button>
+            <button class="month-btn" data-month="3">T3</button>
+            <button class="month-btn" data-month="4">T4</button>
+            <button class="month-btn" data-month="5">T5</button>
+            <button class="month-btn" data-month="6">T6</button>
+            <button class="month-btn" data-month="7">T7</button>
+            <button class="month-btn" data-month="8">T8</button>
+            <button class="month-btn" data-month="9">T9</button>
+            <button class="month-btn" data-month="10">T10</button>
+            <button class="month-btn" data-month="11">T11</button>
+            <button class="month-btn" data-month="12">T12/2026</button>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
-    <script>
-        // Register Service Worker for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered:', registration);
-                    })
-                    .catch((error) => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            });
+    <script type="text/javascript">
+        // Google Translate
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'vi',
+                includedLanguages: 'vi,en,zh-CN,ja,ko,fr,de,es,pt,ru,ar,th',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
         }
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
-
