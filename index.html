@@ -12,75 +12,98 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Google Translate -->
     <div id="google_translate_element" class="google-translate"></div>
 
     <div id="app">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo-container">
-                <img src="LOGO-1-1.png" alt="Logo" class="logo">
-            </div>
-            <div class="header-title">
-                <h1>Lịch 2026</h1>
-                <p class="subtitle">Phật Pháp</p>
-            </div>
-        </header>
-
-        <!-- Month Navigation -->
-        <nav class="month-navigation">
-            <button id="prev-month" class="nav-btn" aria-label="Tháng trước">‹</button>
-            <div class="month-indicator">
-                <span id="current-month-name" class="month-name"></span>
-                <span id="current-year" class="year">2026</span>
-            </div>
-            <button id="next-month" class="nav-btn" aria-label="Tháng sau">›</button>
-        </nav>
-
-        <!-- Calendar Grid -->
-        <main class="calendar-container">
-            <div class="calendar-wrapper">
-                <div class="calendar-header">
-                    <div class="weekday">CN</div>
-                    <div class="weekday">T2</div>
-                    <div class="weekday">T3</div>
-                    <div class="weekday">T4</div>
-                    <div class="weekday">T5</div>
-                    <div class="weekday">T6</div>
-                    <div class="weekday">T7</div>
+        <!-- Hero Section with Calendar -->
+        <section class="hero-section">
+            <div class="hero-background" id="hero-background"></div>
+            <div class="hero-content">
+                <div class="logo-header">
+                    <img src="LOGO-1-1.png" alt="Logo" class="logo">
+                    <div class="header-text">
+                        <h1 class="main-title">Lịch 2026</h1>
+                        <p class="main-subtitle">Phật Pháp</p>
+                    </div>
                 </div>
-                <div id="calendar-grid" class="calendar-grid"></div>
-            </div>
-        </main>
 
-        <!-- Month Theme Display -->
-        <div class="theme-display" id="theme-display">
-            <div class="theme-animation" id="theme-animation"></div>
-            <div class="buddhist-quote">
-                <p id="quote-text"></p>
-                <p class="quote-source" id="quote-source"></p>
+                <!-- Month Navigation -->
+                <nav class="month-navigation">
+                    <button id="prev-month" class="nav-btn" aria-label="Tháng trước">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="month-indicator">
+                        <span id="current-month-name" class="month-name"></span>
+                        <span id="current-year" class="year"></span>
+                    </div>
+                    <button id="next-month" class="nav-btn" aria-label="Tháng sau">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </nav>
+
+                <!-- Calendar Grid - Large and Prominent -->
+                <div class="calendar-main">
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header">
+                            <div class="weekday">CN</div>
+                            <div class="weekday">T2</div>
+                            <div class="weekday">T3</div>
+                            <div class="weekday">T4</div>
+                            <div class="weekday">T5</div>
+                            <div class="weekday">T6</div>
+                            <div class="weekday">T7</div>
+                        </div>
+                        <div id="calendar-grid" class="calendar-grid"></div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Theme Section -->
+        <section class="theme-section">
+            <div class="theme-container">
+                <div class="theme-animation-container" id="theme-animation-container">
+                    <div class="theme-animation" id="theme-animation"></div>
+                </div>
+                <div class="quote-container">
+                    <div class="quote-icon">☸</div>
+                    <blockquote class="buddhist-quote">
+                        <p id="quote-text"></p>
+                        <cite class="quote-source" id="quote-source"></cite>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
 
         <!-- Quick Month Selector -->
-        <div class="month-selector">
-            <button class="month-btn" data-month="0">T12/2025</button>
-            <button class="month-btn" data-month="1">T1</button>
-            <button class="month-btn" data-month="2">T2</button>
-            <button class="month-btn" data-month="3">T3</button>
-            <button class="month-btn" data-month="4">T4</button>
-            <button class="month-btn" data-month="5">T5</button>
-            <button class="month-btn" data-month="6">T6</button>
-            <button class="month-btn" data-month="7">T7</button>
-            <button class="month-btn" data-month="8">T8</button>
-            <button class="month-btn" data-month="9">T9</button>
-            <button class="month-btn" data-month="10">T10</button>
-            <button class="month-btn" data-month="11">T11</button>
-            <button class="month-btn" data-month="12">T12/2026</button>
-        </div>
+        <section class="month-selector-section">
+            <div class="month-selector-container">
+                <h2 class="section-title">Chọn Tháng</h2>
+                <div class="month-selector">
+                    <button class="month-btn" data-month="0">T12/2025</button>
+                    <button class="month-btn" data-month="1">T1</button>
+                    <button class="month-btn" data-month="2">T2</button>
+                    <button class="month-btn" data-month="3">T3</button>
+                    <button class="month-btn" data-month="4">T4</button>
+                    <button class="month-btn" data-month="5">T5</button>
+                    <button class="month-btn" data-month="6">T6</button>
+                    <button class="month-btn" data-month="7">T7</button>
+                    <button class="month-btn" data-month="8">T8</button>
+                    <button class="month-btn" data-month="9">T9</button>
+                    <button class="month-btn" data-month="10">T10</button>
+                    <button class="month-btn" data-month="11">T11</button>
+                    <button class="month-btn" data-month="12">T12/2026</button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="data.js"></script>
@@ -97,5 +120,20 @@
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

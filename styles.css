@@ -9,81 +9,105 @@
     --azure-light: #E6F3FF;
     --azure-dark: #0059B3;
     --azure-gradient: linear-gradient(135deg, #007FFF 0%, #00BFFF 100%);
+    --azure-gradient-light: linear-gradient(135deg, rgba(0, 127, 255, 0.1) 0%, rgba(0, 191, 255, 0.1) 100%);
     --text-color: #1a1a1a;
     --text-light: #666;
     --white: #ffffff;
-    --shadow: 0 4px 20px rgba(0, 127, 255, 0.15);
-    --shadow-hover: 0 8px 30px rgba(0, 127, 255, 0.25);
+    --shadow: 0 8px 32px rgba(0, 127, 255, 0.12);
+    --shadow-hover: 0 12px 48px rgba(0, 127, 255, 0.2);
+    --shadow-large: 0 20px 60px rgba(0, 127, 255, 0.15);
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--azure-light);
+    background: linear-gradient(180deg, #f8fbff 0%, var(--azure-light) 100%);
     min-height: 100vh;
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 /* Google Translate */
 .google-translate {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     z-index: 1000;
     background: white;
-    border-radius: 8px;
-    padding: 5px;
+    border-radius: 12px;
+    padding: 8px;
     box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
 }
 
-/* Header */
-.header {
-    background: var(--azure-gradient);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
+/* Hero Section */
+.hero-section {
     position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
     overflow: hidden;
 }
 
-.header::before {
-    content: '';
+.hero-background {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: float 20s linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    transition: all 1s ease;
 }
 
-@keyframes float {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(50px, 50px) rotate(360deg); }
+.hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.logo-container {
-    margin-bottom: 10px;
+/* Logo Header */
+.logo-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
 }
 
 .logo {
-    height: 50px;
+    height: 70px;
     width: auto;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    margin-bottom: 20px;
+    animation: float-logo 3s ease-in-out infinite;
 }
 
-.header-title h1 {
-    font-size: 2.5rem;
+@keyframes float-logo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.header-text {
+    color: var(--azure-blue);
+}
+
+.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
     font-weight: 700;
-    margin-bottom: 5px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+    background: var(--azure-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 20px rgba(0, 127, 255, 0.2);
 }
 
-.subtitle {
-    font-size: 1.1rem;
-    opacity: 0.95;
+.main-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-light);
     font-weight: 500;
 }
 
@@ -92,34 +116,33 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
-    padding: 25px 20px;
+    gap: 40px;
+    padding: 30px;
     background: white;
-    margin: 20px auto;
-    max-width: 1200px;
-    border-radius: 15px;
+    border-radius: 20px;
     box-shadow: var(--shadow);
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
 }
 
 .nav-btn {
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
     border: none;
     background: var(--azure-gradient);
     color: white;
-    font-size: 32px;
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: var(--shadow);
-    font-weight: bold;
+    flex-shrink: 0;
 }
 
 .nav-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(5deg);
     box-shadow: var(--shadow-hover);
 }
 
@@ -128,52 +151,52 @@ body {
 }
 
 .nav-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 .month-indicator {
     text-align: center;
-    min-width: 250px;
+    min-width: 300px;
 }
 
 .month-name {
     display: block;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--azure-blue);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-family: 'Playfair Display', serif;
 }
 
 .year {
     display: block;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--text-light);
     font-weight: 500;
 }
 
-/* Calendar Container */
-.calendar-container {
-    max-width: 1200px;
-    margin: 0 auto 30px;
-    padding: 0 20px;
+/* Calendar Main */
+.calendar-main {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow-large);
+    backdrop-filter: blur(20px);
+    margin-bottom: 40px;
 }
 
 .calendar-wrapper {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
+    width: 100%;
 }
 
 .calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     border-bottom: 2px solid var(--azure-light);
 }
 
@@ -182,13 +205,15 @@ body {
     font-weight: 700;
     color: var(--azure-blue);
     font-size: 1.1rem;
-    padding: 10px;
+    padding: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    gap: 12px;
 }
 
 .calendar-day {
@@ -196,10 +221,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 16px;
     font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--azure-light);
     color: var(--text-color);
     cursor: pointer;
@@ -208,13 +233,14 @@ body {
 }
 
 .calendar-day:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.05);
     box-shadow: var(--shadow);
     border-color: var(--azure-blue);
+    background: white;
 }
 
 .calendar-day.other-month {
-    opacity: 0.3;
+    opacity: 0.25;
     background: #f5f5f5;
 }
 
@@ -225,95 +251,293 @@ body {
     transform: scale(1.1);
     box-shadow: var(--shadow-hover);
     border-color: var(--azure-dark);
-    animation: pulse 2s ease-in-out infinite;
+    animation: pulse-today 2s ease-in-out infinite;
+    z-index: 10;
 }
 
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 127, 255, 0.7); }
-    50% { box-shadow: 0 0 0 10px rgba(0, 127, 255, 0); }
+@keyframes pulse-today {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(0, 127, 255, 0.7);
+        transform: scale(1.1);
+    }
+    50% { 
+        box-shadow: 0 0 0 15px rgba(0, 127, 255, 0);
+        transform: scale(1.15);
+    }
 }
 
 .calendar-day.today::after {
     content: '●';
     position: absolute;
-    bottom: 5px;
-    font-size: 8px;
+    bottom: 8px;
+    font-size: 10px;
     color: white;
+    opacity: 0.8;
 }
 
-/* Theme Display */
-.theme-display {
-    max-width: 1200px;
-    margin: 0 auto 30px;
-    padding: 0 20px;
+/* Theme Section */
+.theme-section {
+    padding: 60px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.theme-container {
     background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: var(--shadow);
+    border-radius: 24px;
+    padding: 50px;
+    box-shadow: var(--shadow-large);
     position: relative;
     overflow: hidden;
+}
+
+.theme-animation-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    background: var(--azure-gradient-light);
 }
 
 .theme-animation {
     width: 100%;
-    height: 200px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+    height: 100%;
     position: relative;
-    overflow: hidden;
-    background: var(--azure-gradient);
+}
+
+/* Cherry Blossom Petal Animation */
+.cherry-petal {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #FFB6C1;
+    border-radius: 50% 0 50% 0;
+    top: -10px;
+    animation: fall-petal linear forwards;
+}
+
+@keyframes fall-petal {
+    to {
+        transform: translateY(310px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Snowflake */
+.snowflake {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    top: -10px;
+    animation: fall-snow linear infinite;
+}
+
+@keyframes fall-snow {
+    to {
+        transform: translateY(310px);
+    }
+}
+
+/* Plum Blossom */
+.plum-blossom {
+    position: absolute;
+    animation: float-blossom 4s ease-in-out infinite;
+}
+
+@keyframes float-blossom {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, -30px) rotate(180deg); }
+}
+
+/* Rain Drop */
+.rain-drop {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(0, 127, 255, 0.6), rgba(0, 127, 255, 0.2));
+    top: -20px;
+    animation: fall-rain linear infinite;
+}
+
+@keyframes fall-rain {
+    to {
+        transform: translateY(320px);
+    }
+}
+
+/* Lotus Symbol */
+.lotus-symbol {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate-lotus 20s linear infinite;
+}
+
+@keyframes rotate-lotus {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Sun */
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    animation: pulse-sun 3s ease-in-out infinite;
+}
+
+@keyframes pulse-sun {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Autumn Leaf */
+.autumn-leaf {
+    position: absolute;
+    top: -20px;
+    animation: fall-leaf linear infinite;
+}
+
+@keyframes fall-leaf {
+    to {
+        transform: translateY(320px) rotate(720deg);
+    }
+}
+
+/* Moon */
+.moon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 30% 30%, #FFF8DC 0%, #E6E6FA 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(230, 230, 250, 0.8);
+}
+
+/* Chrysanthemum */
+.chrysanthemum {
+    position: absolute;
+    animation: float-flower 5s ease-in-out infinite;
+}
+
+@keyframes float-flower {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(15px, -20px) scale(1.1); }
+}
+
+/* Frost Pattern */
+.frost-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+    background-size: 50px 50px, 60px 60px;
+    animation: frost-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes frost-shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+
+/* Quote Container */
+.quote-container {
+    text-align: center;
+    position: relative;
+}
+
+.quote-icon {
+    font-size: 4rem;
+    color: var(--azure-blue);
+    opacity: 0.2;
+    margin-bottom: 30px;
 }
 
 .buddhist-quote {
-    text-align: center;
-    padding: 20px;
-}
-
-.buddhist-quote p {
-    font-size: 1.2rem;
-    line-height: 1.8;
+    font-size: 1.4rem;
+    line-height: 2;
     color: var(--text-color);
     font-style: italic;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .quote-source {
-    font-size: 0.9rem;
+    display: block;
+    font-size: 1rem;
     color: var(--text-light);
     font-style: normal;
-    margin-top: 10px;
+    margin-top: 20px;
+    font-weight: 500;
 }
 
-/* Month Selector */
+/* Month Selector Section */
+.month-selector-section {
+    padding: 60px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.month-selector-container {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow-large);
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--azure-blue);
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Playfair Display', serif;
+}
+
 .month-selector {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto 30px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: var(--shadow);
 }
 
 .month-btn {
-    padding: 12px 20px;
+    padding: 16px 28px;
     border: 2px solid var(--azure-light);
     background: white;
     color: var(--azure-blue);
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    min-width: 100px;
 }
 
 .month-btn:hover {
     background: var(--azure-light);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow);
+    border-color: var(--azure-blue);
 }
 
 .month-btn.active {
@@ -321,102 +545,97 @@ body {
     color: white;
     border-color: var(--azure-blue);
     box-shadow: var(--shadow);
+    transform: translateY(-3px);
 }
 
-/* Theme Animations */
-.theme-cherry-blossom .theme-animation {
-    background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 100%);
-}
-
-.theme-cherry-blossom .theme-animation::before {
-    content: '🌸';
-    position: absolute;
-    font-size: 3rem;
-    animation: float-blossom 3s ease-in-out infinite;
-}
-
-@keyframes float-blossom {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(20px, -20px) rotate(180deg); }
-}
-
-.theme-plum-blossom .theme-animation {
-    background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
-}
-
-.theme-lotus .theme-animation {
-    background: linear-gradient(135deg, #FFB6C1 0%, #FFF8DC 100%);
-}
-
-.theme-lotus .theme-animation::before {
-    content: '☸';
-    position: absolute;
-    font-size: 4rem;
+/* Theme Backgrounds */
+.hero-background.theme-cherry-blossom {
+    background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 50%, #FFB6C1 100%);
     opacity: 0.3;
-    animation: rotate 10s linear infinite;
 }
 
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.hero-background.theme-plum-blossom {
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+    opacity: 0.3;
 }
 
-.theme-snow .theme-animation {
+.hero-background.theme-snow {
     background: linear-gradient(135deg, #E0F2F7 0%, #B0E0E6 100%);
+    opacity: 0.3;
 }
 
-.theme-spring-rain .theme-animation {
+.hero-background.theme-spring-rain {
     background: linear-gradient(135deg, #E6F3FF 0%, #B3D9FF 100%);
+    opacity: 0.3;
 }
 
-.theme-summer-sun .theme-animation {
+.hero-background.theme-lotus {
+    background: linear-gradient(135deg, #FFB6C1 0%, #FFF8DC 100%);
+    opacity: 0.3;
+}
+
+.hero-background.theme-summer-sun {
     background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+    opacity: 0.3;
 }
 
-.theme-autumn-leaves .theme-animation {
+.hero-background.theme-autumn-leaves {
     background: linear-gradient(135deg, #FFE4B5 0%, #FFA500 100%);
+    opacity: 0.3;
 }
 
-.theme-autumn-moon .theme-animation {
+.hero-background.theme-autumn-moon {
     background: linear-gradient(135deg, #E6E6FA 0%, #DDA0DD 100%);
+    opacity: 0.3;
 }
 
-.theme-chrysanthemum .theme-animation {
+.hero-background.theme-chrysanthemum {
     background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%);
+    opacity: 0.3;
 }
 
-.theme-winter-frost .theme-animation {
+.hero-background.theme-winter-frost {
     background: linear-gradient(135deg, #F0F8FF 0%, #E0F2F7 100%);
+    opacity: 0.3;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .header-title h1 {
-        font-size: 1.8rem;
+    .main-title {
+        font-size: 2.5rem;
+    }
+
+    .main-subtitle {
+        font-size: 1.2rem;
     }
 
     .month-name {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
-    .calendar-wrapper {
-        padding: 15px;
+    .calendar-main {
+        padding: 20px;
     }
 
     .calendar-day {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
-    .month-selector {
-        padding: 15px;
+    .theme-container {
+        padding: 30px 20px;
+    }
+
+    .buddhist-quote {
+        font-size: 1.1rem;
+    }
+
+    .month-selector-container {
+        padding: 30px 20px;
     }
 
     .month-btn {
-        padding: 10px 15px;
-        font-size: 0.85rem;
-    }
-
-    .buddhist-quote p {
-        font-size: 1rem;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        min-width: 80px;
     }
 }

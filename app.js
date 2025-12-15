@@ -1,6 +1,7 @@
 // Main Application
 let currentMonthIndex = getCurrentMonthIndex();
 let today = getCurrentDate();
+let animationInterval = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -69,8 +70,9 @@ function loadMonth(monthIndex) {
     // Render calendar
     renderCalendar(monthData);
 
-    // Update theme
+    // Update theme and background
     updateTheme(monthData);
+    updateHeroBackground(monthData);
 
     // Update quote
     updateQuote(monthData);
@@ -135,94 +137,189 @@ function createDayElement(day, isPrevMonth, isToday, isNextMonth) {
     return dayDiv;
 }
 
-// Update theme
-function updateTheme(monthData) {
-    const themeDisplay = document.getElementById('theme-display');
-    const themeAnimation = document.getElementById('theme-animation');
+// Update hero background based on theme
+function updateHeroBackground(monthData) {
+    const heroBackground = document.getElementById('hero-background');
+    if (!heroBackground) return;
     
     // Remove all theme classes
-    themeDisplay.className = 'theme-display';
+    heroBackground.className = 'hero-background';
+    heroBackground.classList.add(`theme-${monthData.theme}`);
+}
+
+// Update theme
+function updateTheme(monthData) {
+    const themeContainer = document.getElementById('theme-animation-container');
+    const themeAnimation = document.getElementById('theme-animation');
+    
+    if (!themeContainer || !themeAnimation) return;
+    
+    // Clear previous animations
+    if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+    }
+    
+    // Remove all theme classes
+    themeContainer.className = 'theme-animation-container';
+    themeAnimation.className = 'theme-animation';
     
     // Add current theme class
-    themeDisplay.classList.add(`theme-${monthData.theme}`);
+    themeContainer.classList.add(`theme-${monthData.theme}`);
+    themeAnimation.classList.add(`theme-${monthData.theme}`);
     
-    // Add animation based on theme
+    // Clear and add animation based on theme
     themeAnimation.innerHTML = '';
+    
     if (monthData.theme === 'snow') {
         createSnowEffect(themeAnimation);
-    } else if (monthData.theme === 'cherry-blossom') {
-        createCherryBlossomEffect(themeAnimation);
+    } else if (monthData.theme === 'cherry-blossom' || monthData.isTet) {
+        createCherryBlossomFallingEffect(themeAnimation);
     } else if (monthData.theme === 'plum-blossom') {
         createPlumBlossomEffect(themeAnimation);
+    } else if (monthData.theme === 'spring-rain') {
+        createRainEffect(themeAnimation);
+    } else if (monthData.theme === 'lotus') {
+        createLotusEffect(themeAnimation);
+    } else if (monthData.theme === 'summer-sun') {
+        createSunEffect(themeAnimation);
+    } else if (monthData.theme === 'autumn-leaves') {
+        createAutumnLeavesEffect(themeAnimation);
+    } else if (monthData.theme === 'autumn-moon') {
+        createMoonEffect(themeAnimation);
+    } else if (monthData.theme === 'chrysanthemum') {
+        createChrysanthemumEffect(themeAnimation);
+    } else if (monthData.theme === 'winter-frost') {
+        createFrostEffect(themeAnimation);
     }
+}
+
+// Create cherry blossom falling effect (for Tet month)
+function createCherryBlossomFallingEffect(container) {
+    // Create continuous falling petals
+    function createPetals() {
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const petal = document.createElement('div');
+                petal.className = 'cherry-petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                petal.style.animationDelay = Math.random() * 1 + 's';
+                petal.style.opacity = Math.random() * 0.5 + 0.5;
+                container.appendChild(petal);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (petal.parentNode) {
+                        petal.remove();
+                    }
+                }, 8000);
+            }, i * 200);
+        }
+    }
+    
+    // Initial petals
+    createPetals();
+    
+    // Create new petals every 2 seconds
+    animationInterval = setInterval(createPetals, 2000);
 }
 
 // Create snow effect
 function createSnowEffect(container) {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
         const snowflake = document.createElement('div');
-        snowflake.style.cssText = `
-            position: absolute;
-            width: ${Math.random() * 5 + 3}px;
-            height: ${snowflake.style.width};
-            background: white;
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            opacity: ${Math.random() * 0.5 + 0.5};
-            animation: fall ${Math.random() * 3 + 2}s linear infinite;
-            animation-delay: ${Math.random() * 2}s;
-        `;
+        snowflake.className = 'snowflake';
+        snowflake.style.left = Math.random() * 100 + '%';
+        snowflake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        snowflake.style.animationDelay = Math.random() * 2 + 's';
+        snowflake.style.opacity = Math.random() * 0.5 + 0.5;
         container.appendChild(snowflake);
-    }
-    
-    // Add fall animation
-    if (!document.getElementById('snow-animation-style')) {
-        const style = document.createElement('style');
-        style.id = 'snow-animation-style';
-        style.textContent = `
-            @keyframes fall {
-                to {
-                    transform: translateY(200px);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Create cherry blossom effect
-function createCherryBlossomEffect(container) {
-    for (let i = 0; i < 15; i++) {
-        const blossom = document.createElement('div');
-        blossom.textContent = '🌸';
-        blossom.style.cssText = `
-            position: absolute;
-            font-size: ${Math.random() * 20 + 15}px;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: float-blossom ${Math.random() * 3 + 2}s ease-in-out infinite;
-            animation-delay: ${Math.random() * 2}s;
-        `;
-        container.appendChild(blossom);
     }
 }
 
 // Create plum blossom effect
 function createPlumBlossomEffect(container) {
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 15; i++) {
         const blossom = document.createElement('div');
+        blossom.className = 'plum-blossom';
         blossom.textContent = '🌺';
-        blossom.style.cssText = `
-            position: absolute;
-            font-size: ${Math.random() * 20 + 15}px;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: float-blossom ${Math.random() * 3 + 2}s ease-in-out infinite;
-            animation-delay: ${Math.random() * 2}s;
-        `;
+        blossom.style.left = Math.random() * 100 + '%';
+        blossom.style.top = Math.random() * 100 + '%';
+        blossom.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        blossom.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        blossom.style.animationDelay = Math.random() * 2 + 's';
         container.appendChild(blossom);
     }
+}
+
+// Create rain effect
+function createRainEffect(container) {
+    for (let i = 0; i < 20; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's';
+        drop.style.animationDelay = Math.random() * 1 + 's';
+        container.appendChild(drop);
+    }
+}
+
+// Create lotus effect
+function createLotusEffect(container) {
+    const lotus = document.createElement('div');
+    lotus.className = 'lotus-symbol';
+    lotus.textContent = '☸';
+    lotus.style.fontSize = '6rem';
+    lotus.style.opacity = '0.2';
+    container.appendChild(lotus);
+}
+
+// Create sun effect
+function createSunEffect(container) {
+    const sun = document.createElement('div');
+    sun.className = 'sun';
+    container.appendChild(sun);
+}
+
+// Create autumn leaves effect
+function createAutumnLeavesEffect(container) {
+    for (let i = 0; i < 10; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'autumn-leaf';
+        leaf.textContent = '🍂';
+        leaf.style.left = Math.random() * 100 + '%';
+        leaf.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        leaf.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(leaf);
+    }
+}
+
+// Create moon effect
+function createMoonEffect(container) {
+    const moon = document.createElement('div');
+    moon.className = 'moon';
+    container.appendChild(moon);
+}
+
+// Create chrysanthemum effect
+function createChrysanthemumEffect(container) {
+    for (let i = 0; i < 8; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'chrysanthemum';
+        flower.textContent = '🌼';
+        flower.style.left = Math.random() * 100 + '%';
+        flower.style.top = Math.random() * 100 + '%';
+        flower.style.fontSize = (Math.random() * 15 + 20) + 'px';
+        container.appendChild(flower);
+    }
+}
+
+// Create frost effect
+function createFrostEffect(container) {
+    const frost = document.createElement('div');
+    frost.className = 'frost-pattern';
+    container.appendChild(frost);
 }
 
 // Update quote
