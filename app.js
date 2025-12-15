@@ -3,9 +3,37 @@ let currentMonthIndex = getCurrentMonthIndex();
 let today = getCurrentDate();
 let animationInterval = null;
 let monthEvents = {};
+let showEvents = true; // Default: show events
+
+// Load settings from localStorage
+function loadSettings() {
+    const saved = localStorage.getItem('calendarSettings');
+    if (saved) {
+        const settings = JSON.parse(saved);
+        showEvents = settings.showEvents !== false; // Default true
+    }
+    updateEventToggleUI();
+}
+
+// Save settings to localStorage
+function saveSettings() {
+    localStorage.setItem('calendarSettings', JSON.stringify({
+        showEvents: showEvents
+    }));
+}
+
+// Update toggle button UI
+function updateEventToggleUI() {
+    const toggleBtn = document.getElementById('toggle-events');
+    if (toggleBtn) {
+        toggleBtn.classList.toggle('active', showEvents);
+        toggleBtn.setAttribute('aria-pressed', showEvents);
+    }
+}
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
+    loadSettings();
     initEventListeners();
     loadMonth(currentMonthIndex);
     createWatercolorEffect();
@@ -49,6 +77,21 @@ function initEventListeners() {
             loadMonth(currentMonthIndex);
         }
     });
+
+    // Toggle events button
+    const toggleEventsBtn = document.getElementById('toggle-events');
+    if (toggleEventsBtn) {
+        toggleEventsBtn.addEventListener('click', () => {
+            showEvents = !showEvents;
+            saveSettings();
+            updateEventToggleUI();
+            // Re-render calendar to update event visibility
+            const monthData = calendarData.months[currentMonthIndex];
+            if (monthData) {
+                renderCalendar(monthData);
+            }
+        });
+    }
 }
 
 // Load month data and render calendar
@@ -155,8 +198,8 @@ function createDayElement(day, isPrevMonth, isToday, isNextMonth, events, solarD
         dayDiv.classList.add('today');
     }
 
-    // Add event indicator
-    if (events && events.length > 0) {
+    // Add event indicator (only if showEvents is true)
+    if (events && events.length > 0 && showEvents) {
         const eventIndicator = document.createElement('div');
         eventIndicator.className = 'event-indicator';
         eventIndicator.title = events.map(e => e.name).join(', ');
@@ -172,6 +215,10 @@ function createDayElement(day, isPrevMonth, isToday, isNextMonth, events, solarD
         dayDiv.classList.add('has-events');
         
         // Add click to show event details
+        dayDiv.addEventListener('click', () => showEventDetails(day, events));
+    } else if (events && events.length > 0) {
+        // Events exist but hidden - still add class for styling but no indicator
+        dayDiv.classList.add('has-events-hidden');
         dayDiv.addEventListener('click', () => showEventDetails(day, events));
     }
 
