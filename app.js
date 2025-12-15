@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initEventListeners();
     loadMonth(currentMonthIndex);
     createWatercolorEffect();
+    initGallery();
 });
 
 // Initialize event listeners
@@ -92,6 +93,50 @@ function initEventListeners() {
             }
         });
     }
+
+    // Gallery modal event listeners
+    initGalleryModal();
+}
+
+// Initialize Gallery Modal
+function initGalleryModal() {
+    const modal = document.getElementById('gallery-modal');
+    const closeBtn = document.getElementById('modal-close');
+    const prevBtn = document.getElementById('modal-prev');
+    const nextBtn = document.getElementById('modal-next');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeGalleryModal);
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => navigateGallery(-1));
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => navigateGallery(1));
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeGalleryModal();
+            }
+        });
+    }
+
+    // Keyboard navigation for gallery
+    document.addEventListener('keydown', (e) => {
+        if (modal && modal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeGalleryModal();
+            } else if (e.key === 'ArrowLeft') {
+                navigateGallery(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateGallery(1);
+            }
+        }
+    });
 }
 
 // Load month data and render calendar
@@ -582,3 +627,79 @@ function updateQuote(monthData) {
     document.getElementById('quote-text').textContent = monthData.quote;
     document.getElementById('quote-source').textContent = monthData.source;
 }
+
+// Initialize Gallery
+function initGallery() {
+    const gallery = document.getElementById('factory-gallery');
+    if (!gallery) return;
+
+    gallery.innerHTML = '';
+
+    factoryGallery.images.forEach((image, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.dataset.index = index;
+
+        const img = document.createElement('img');
+        img.src = image.src;
+        img.alt = image.title;
+        img.loading = 'lazy';
+        img.onerror = () => {
+            galleryItem.style.display = 'none';
+        };
+
+        const overlay = document.createElement('div');
+        overlay.className = 'gallery-overlay';
+        
+        const title = document.createElement('div');
+        title.className = 'gallery-title';
+        title.textContent = image.title;
+
+        overlay.appendChild(title);
+        galleryItem.appendChild(img);
+        galleryItem.appendChild(overlay);
+
+        galleryItem.addEventListener('click', () => openGalleryModal(index));
+        gallery.appendChild(galleryItem);
+    });
+}
+
+// Gallery Modal
+let currentGalleryIndex = 0;
+
+function openGalleryModal(index) {
+    currentGalleryIndex = index;
+    const modal = document.getElementById('gallery-modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalTitle = document.getElementById('modal-title');
+    const image = factoryGallery.images[index];
+
+    modalImage.src = image.src;
+    modalTitle.textContent = image.title;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+    const modal = document.getElementById('gallery-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function navigateGallery(direction) {
+    currentGalleryIndex += direction;
+    
+    if (currentGalleryIndex < 0) {
+        currentGalleryIndex = factoryGallery.images.length - 1;
+    } else if (currentGalleryIndex >= factoryGallery.images.length) {
+        currentGalleryIndex = 0;
+    }
+    
+    const image = factoryGallery.images[currentGalleryIndex];
+    const modalImage = document.getElementById('modal-image');
+    const modalTitle = document.getElementById('modal-title');
+    
+    modalImage.src = image.src;
+    modalTitle.textContent = image.title;
+}
+
