@@ -15,8 +15,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Google Translate -->
-    <div id="google_translate_element" class="google-translate"></div>
+    <!-- Language Selector -->
+    <div class="language-selector-container">
+        <button id="lang-toggle" class="lang-toggle-btn" title="Chọn ngôn ngữ">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span id="current-lang-display">VI</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown">
+            <button class="lang-option" data-lang="vi" data-code="vi">
+                <span class="lang-flag">🇻🇳</span>
+                <span class="lang-name">Tiếng Việt</span>
+            </button>
+            <button class="lang-option" data-lang="en" data-code="en">
+                <span class="lang-flag">🇺🇸</span>
+                <span class="lang-name">English</span>
+            </button>
+            <button class="lang-option" data-lang="zh" data-code="zh-CN">
+                <span class="lang-flag">🇨🇳</span>
+                <span class="lang-name">中文</span>
+            </button>
+            <button class="lang-option" data-lang="ja" data-code="ja">
+                <span class="lang-flag">🇯🇵</span>
+                <span class="lang-name">日本語</span>
+            </button>
+            <button class="lang-option" data-lang="ko" data-code="ko">
+                <span class="lang-flag">🇰🇷</span>
+                <span class="lang-name">한국어</span>
+            </button>
+            <button class="lang-option" data-lang="fr" data-code="fr">
+                <span class="lang-flag">🇫🇷</span>
+                <span class="lang-name">Français</span>
+            </button>
+            <button class="lang-option" data-lang="de" data-code="de">
+                <span class="lang-flag">🇩🇪</span>
+                <span class="lang-name">Deutsch</span>
+            </button>
+            <button class="lang-option" data-lang="es" data-code="es">
+                <span class="lang-flag">🇪🇸</span>
+                <span class="lang-name">Español</span>
+            </button>
+            <button class="lang-option" data-lang="pt" data-code="pt">
+                <span class="lang-flag">🇵🇹</span>
+                <span class="lang-name">Português</span>
+            </button>
+            <button class="lang-option" data-lang="ru" data-code="ru">
+                <span class="lang-flag">🇷🇺</span>
+                <span class="lang-name">Русский</span>
+            </button>
+            <button class="lang-option" data-lang="ar" data-code="ar">
+                <span class="lang-flag">🇸🇦</span>
+                <span class="lang-name">العربية</span>
+            </button>
+            <button class="lang-option" data-lang="th" data-code="th">
+                <span class="lang-flag">🇹🇭</span>
+                <span class="lang-name">ไทย</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Google Translate (Hidden, used for actual translation) -->
+    <div id="google_translate_element" style="display: none;"></div>
 
     <!-- Settings Toggle -->
     <div class="settings-toggle">
@@ -144,15 +208,99 @@
     <script src="gallery-data.js"></script>
     <script src="app.js"></script>
     <script type="text/javascript">
-        // Google Translate
+        // Google Translate - Enhanced
+        let currentLangCode = 'vi';
+        
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'vi',
                 includedLanguages: 'vi,en,zh-CN,ja,ko,fr,de,es,pt,ru,ar,th',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
+                autoDisplay: false,
+                multilanguagePage: true
             }, 'google_translate_element');
         }
+        
+        // Custom language selector
+        document.addEventListener('DOMContentLoaded', () => {
+            const langToggle = document.getElementById('lang-toggle');
+            const langDropdown = document.getElementById('lang-dropdown');
+            const langOptions = document.querySelectorAll('.lang-option');
+            const currentLangDisplay = document.getElementById('current-lang-display');
+            
+            // Load saved language
+            const savedLang = localStorage.getItem('selectedLanguage') || 'vi';
+            currentLangCode = savedLang;
+            updateLanguageDisplay(savedLang);
+            
+            // Toggle dropdown
+            if (langToggle) {
+                langToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    langDropdown.classList.toggle('show');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!langToggle.contains(e.target) && !langDropdown.contains(e.target)) {
+                    langDropdown.classList.remove('show');
+                }
+            });
+            
+            // Language selection
+            langOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.dataset.lang;
+                    const code = option.dataset.code;
+                    currentLangCode = code;
+                    
+                    // Save to localStorage
+                    localStorage.setItem('selectedLanguage', code);
+                    
+                    // Update display
+                    updateLanguageDisplay(lang);
+                    
+                    // Trigger Google Translate
+                    if (window.google && window.google.translate) {
+                        const select = document.querySelector('.goog-te-combo');
+                        if (select) {
+                            select.value = code;
+                            select.dispatchEvent(new Event('change'));
+                        }
+                    }
+                    
+                    // Close dropdown
+                    langDropdown.classList.remove('show');
+                });
+            });
+            
+            function updateLanguageDisplay(lang) {
+                const langMap = {
+                    'vi': 'VI',
+                    'en': 'EN',
+                    'zh': '中文',
+                    'ja': 'JP',
+                    'ko': 'KR',
+                    'fr': 'FR',
+                    'de': 'DE',
+                    'es': 'ES',
+                    'pt': 'PT',
+                    'ru': 'RU',
+                    'ar': 'AR',
+                    'th': 'TH'
+                };
+                
+                if (currentLangDisplay) {
+                    currentLangDisplay.textContent = langMap[lang] || lang.toUpperCase();
+                }
+                
+                // Update active state
+                langOptions.forEach(opt => {
+                    opt.classList.toggle('active', opt.dataset.lang === lang);
+                });
+            }
+        });
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     

@@ -4,6 +4,7 @@ let today = getCurrentDate();
 let animationInterval = null;
 let monthEvents = {};
 let showEvents = true; // Default: show events
+let currentLanguage = 'vi'; // Current language code
 
 // Load settings from localStorage
 function loadSettings() {
